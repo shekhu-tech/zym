@@ -686,9 +686,9 @@
     </div>
   </div>
 
- <script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
-    const card = document.querySelector('.card');
+    const cards = document.querySelectorAll('.card');
     const popup = document.getElementById('popup');
     const welcomePopup = document.getElementById('welcomePopup');
     const thanksPopup = document.getElementById('thanksPopup');
@@ -697,43 +697,45 @@
 
     const isSubmitted = localStorage.getItem('formSubmitted');
 
-    // Card Click Handler
-    card.addEventListener('click', (e) => {
-      if (isSubmitted) {
-        window.location.href = "zymbegnnermix.html";
-        return;
-      }
-      welcomePopup.style.display = 'flex';
+    // Card Click Handler for all cards
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (isSubmitted) {
+          window.location.href = "zymbegnnermix.html";
+        } else {
+          welcomePopup.style.display = 'flex';
+        }
+      });
     });
 
     // Show Form
     window.showForm = function () {
       welcomePopup.style.display = 'none';
       popup.style.display = 'flex';
-    }
+    };
 
     // Show Experience Popup
     window.showExperiencePopup = function () {
       welcomePopup.style.display = 'none';
       experiencePopup.style.display = 'flex';
-    }
+    };
 
     // Close Thanks Popup
     window.closeThanks = function () {
       thanksPopup.style.display = 'none';
       window.location.href = "zymbegnnermix.html";
-    }
+    };
 
-    // Real-time validation
+    // Form validation patterns
+    const formFields = {
       name: /^[A-Za-z ]{3,}$/,
       email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       number: /^\+91[6-9]\d{9}$/,
-      country: /^[A-Za-z ]{3,}$/,
-      state: /^[A-Za-z ]{2,}$/,
-      district: /^[A-Za-z ]{2,}$/,
-      address: /^.{5,}$/
+      country: /.+/
+    };
 
-    document.querySelectorAll('input').forEach(input => {
+    // Real-time validation
+    document.querySelectorAll('input, select').forEach(input => {
       input.addEventListener('input', (e) => {
         const field = e.target.name;
         const errorElement = document.getElementById(`${field}Error`);
@@ -742,7 +744,7 @@
           errorElement.style.display = 'block';
           e.target.setCustomValidity('Invalid field');
         } else {
-          errorElement.style.display = 'none';
+          if (errorElement) errorElement.style.display = 'none';
           e.target.setCustomValidity('');
         }
       });
@@ -764,12 +766,15 @@
         return;
       }
 
-      if (!form.checkValidity()) return alert('Please fill all fields correctly.');
+      if (!form.checkValidity()) {
+        alert('Please fill all fields correctly.');
+        return;
+      }
 
       const formData = Object.fromEntries(new FormData(form));
       console.log('Form Submitted:', formData);
-      localStorage.setItem('formSubmitted', 'true');
 
+      localStorage.setItem('formSubmitted', 'true');
       popup.style.display = 'none';
       thanksPopup.style.display = 'flex';
       form.reset();
@@ -785,15 +790,14 @@
       return disposableDomains.includes(domain.toLowerCase());
     }
 
-    // Close Popups on Outside Click
-    [welcomePopup, popup, thanksPopup, experiencePopup].forEach(popup => {
-      popup.addEventListener('click', function (e) {
+    // Close popups on outside click
+    [welcomePopup, popup, thanksPopup, experiencePopup].forEach(popupElement => {
+      popupElement.addEventListener('click', function (e) {
         if (e.target === this) this.style.display = 'none';
       });
     });
   });
 </script>
-
 
 
   <!-- Card 2 -->
