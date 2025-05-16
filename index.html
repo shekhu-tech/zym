@@ -291,10 +291,6 @@
   </div>
 </div>-->
 
-</body>
-</html>
-
-
  <body>
   <main>
    <section class="products-section">
@@ -386,7 +382,6 @@
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
 
-
     .card {
       background: #222;
       border-radius: 16px;
@@ -419,7 +414,7 @@
       color: #00f7ff;
     }
 
-    .popup, .thanks-popup, .welcome-popup {
+    .popup, .thanks-popup, .welcome-popup, .experience-popup {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
@@ -432,7 +427,7 @@
       padding: 1rem;
     }
 
-    .popup-content, .thanks-content, .welcome-content {
+    .popup-content, .thanks-content, .welcome-content, .experience-content {
       background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
       padding: 2rem;
       border-radius: 16px;
@@ -481,14 +476,31 @@
       background: #00c2d3;
     }
 
+    button.secondary {
+      background: #333;
+      color: #00f7ff;
+      border: 1px solid #00f7ff;
+    }
+
+    button.secondary:hover {
+      background: #444;
+    }
+
     p {
       color: #eee;
       margin-top: 0.5rem;
       font-size: 0.95rem;
     }
 
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
     @media (max-width: 500px) {
-      .popup-content, .thanks-content, .welcome-content {
+      .popup-content, .thanks-content, .welcome-content, .experience-content {
         padding: 1rem;
         max-height: 85vh;
       }
@@ -501,9 +513,7 @@
 
   <!-- Card -->
   <div class="card" data-title="Mix For One Week">
-    <a href="#" class="card-link">
-      <div class="card-background" style="background-image: url('rn.png');"></div>
-    </a>
+    <div class="card-background" style="background-image: url('rn.png');"></div>
     <div class="card-content">
       <h3>Mix For One Week</h3>
     </div>
@@ -526,7 +536,23 @@
       <p>4. Do one set of every exercise</p>
       <p>5. Do 8 repetition in every set</p>
       <p>6. Every step must follow</p>
-      <button onclick="showForm()">OK I Will Follow →</button>
+      <div class="button-group">
+        <button onclick="showForm()">OK I Will Follow →</button>
+        <button class="secondary" onclick="window.location.href='index.html'">I Wanted to Check</button>
+        <button class="secondary" onclick="showExperiencePopup()">I Have Experience</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experience Popup -->
+  <div class="experience-popup" id="experiencePopup">
+    <div class="experience-content">
+      <h2>Select Your Experience Level</h2>
+      <div class="button-group">
+        <button onclick="window.location.href='index.html'">Till One Year</button>
+        <button onclick="window.location.href='index.html'">Till 2 Years</button>
+        <button onclick="window.location.href='index.html'">3 Years Onwards</button>
+      </div>
     </div>
   </div>
 
@@ -557,58 +583,63 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script>
     const card = document.querySelector('.card');
     const popup = document.getElementById('popup');
-    const popupTitle = document.getElementById('popup-title');
     const welcomePopup = document.getElementById('welcomePopup');
     const thanksPopup = document.getElementById('thanksPopup');
+    const experiencePopup = document.getElementById('experiencePopup');
     const form = document.getElementById('infoForm');
 
     const isSubmitted = localStorage.getItem('formSubmitted');
 
+    // Card Click Handler
     card.addEventListener('click', (e) => {
-      e.preventDefault();
-
       if (isSubmitted) {
-        // Redirect to next page if form already submitted
-        window.location.href = "zymbegnnermix.html"; // Change this to your actual page
+        window.location.href = "zymbegnnermix.html";
         return;
       }
-
-      const title = card.getAttribute('data-title');
-      popupTitle.innerText = title;
       welcomePopup.style.display = 'flex';
     });
 
+    // Show Form
     function showForm() {
       welcomePopup.style.display = 'none';
       popup.style.display = 'flex';
     }
 
+    // Show Experience Popup
+    function showExperiencePopup() {
+      welcomePopup.style.display = 'none';
+      experiencePopup.style.display = 'flex';
+    }
+
+    // Form Submission
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (!form.checkValidity()) return alert('Please fill all fields correctly.');
 
-      if (!form.checkValidity()) {
-        alert('Please fill all fields correctly.');
-        return;
-      }
-
-      const data = new FormData(form);
-      const formData = Object.fromEntries(data.entries());
+      const formData = Object.fromEntries(new FormData(form));
       console.log('Form Submitted:', formData);
-
       localStorage.setItem('formSubmitted', 'true');
-
+      
       popup.style.display = 'none';
       thanksPopup.style.display = 'flex';
       form.reset();
     });
 
+    // Close Thanks Popup
     function closeThanks() {
       thanksPopup.style.display = 'none';
+      window.location.href = "zymbegnnermix.html";
     }
+
+    // Close Popups on Outside Click
+    [welcomePopup, popup, thanksPopup, experiencePopup].forEach(popup => {
+      popup.addEventListener('click', function(e) {
+        if (e.target === this) this.style.display = 'none';
+      });
+    });
   </script>
 
 
