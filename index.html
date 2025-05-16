@@ -509,6 +509,16 @@
         font-size: 1.2rem;
       }
     }
+    .error-message {
+        color: #ff4444;
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+        display: none;
+    }
+
+    input:invalid, select:invalid {
+        border: 1px solid #ff4444 !important;
+    }
   </style>
 
   <!-- Card -->
@@ -559,21 +569,35 @@
   <!-- Form Popup -->
   <div class="popup" id="popup">
     <div class="popup-content">
-      <h2 id="popup-title">Training Plan</h2>
-      <form id="infoForm">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="tel" name="number" placeholder="Mobile Number" pattern="[0-9]{10}" required />
-        <input type="email" name="email" placeholder="Email Address" required />
-        <input type="text" name="country" placeholder="Country" required />
-        <input type="text" name="state" placeholder="State" required />
-        <input type="text" name="district" placeholder="District" required />
-        <textarea name="address" rows="2" placeholder="Full Address" required></textarea>
-        <input type="text" name="source" placeholder="How did you know about us?" required />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  </div>
+        <h2 id="popup-title">Training Plan</h2>
+        <form id="infoForm">
+            <input type="text" name="name" placeholder="Your Name" required 
+                   pattern="[A-Za-z ]{3,}" 
+                   title="Only letters and spaces (min 3 characters)">
+            <div class="error-message" id="nameError">Please enter a valid name (letters only, 3+ characters)</div>
 
+            <input type="tel" name="number" placeholder="Mobile Number (e.g. +919876543210)" 
+                   pattern="^\+91[6-9]\d{9}$" required>
+            <div class="error-message" id="phoneError">Valid Indian number required (e.g. +919876543210)</div>
+
+            <input type="email" name="email" placeholder="Email Address" required
+                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+            <div class="error-message" id="emailError">Valid email required (e.g. name@domain.com)</div>
+
+            <select name="country" required>
+                <option value="">Select Country</option>
+                <option value="India">India</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Other">Other</option>
+            </select>
+            <div class="error-message" id="countryError">Please select your country</div>
+
+            <!-- Rest of the form fields -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
   <!-- Thank You Popup -->
   <div class="thanks-popup" id="thanksPopup">
     <div class="thanks-content">
@@ -584,6 +608,58 @@
   </div>
 
   <script>
+    // Real-time validation
+    const formFields = {
+        name: /^[A-Za-z ]{3,}$/,
+        email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        number: /^\+91[6-9]\d{9}$/
+    };
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', (e) => {
+            const field = e.target.name;
+            const errorElement = document.getElementById(`${field}Error`);
+            
+            if(formFields[field] && !formFields[field].test(e.target.value)) {
+                errorElement.style.display = 'block';
+                e.target.setCustomValidity('Invalid field');
+            } else {
+                errorElement.style.display = 'none';
+                e.target.setCustomValidity('');
+            }
+        });
+    });
+
+    // Enhanced form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Additional validation
+        const country = document.querySelector('[name="country"]');
+        if(country.value === "") {
+            document.getElementById('countryError').style.display = 'block';
+            return;
+        }
+
+        // Validate email domain
+        const email = document.querySelector('[name="email"]').value;
+        if(isDisposableEmail(email)) {
+            alert('Disposable email addresses are not allowed');
+            return;
+        }
+
+        // Rest of your submission logic
+    });
+
+    // Disposable email checker
+    function isDisposableEmail(email) {
+        const disposableDomains = [
+            'tempmail.com', 'mailinator.com', '10minutemail.com',
+            'guerrillamail.com', 'throwawaymail.com', 'fakeinbox.com'
+        ];
+        const domain = email.split('@')[1];
+        return disposableDomains.includes(domain.toLowerCase());
+    }
     const card = document.querySelector('.card');
     const popup = document.getElementById('popup');
     const welcomePopup = document.getElementById('welcomePopup');
