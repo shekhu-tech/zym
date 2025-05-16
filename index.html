@@ -725,11 +725,13 @@
     }
 
     // Real-time validation
-    const formFields = {
       name: /^[A-Za-z ]{3,}$/,
       email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      number: /^\+91[6-9]\d{9}$/
-    };
+      number: /^\+91[6-9]\d{9}$/,
+      country: /^[A-Za-z ]{3,}$/,
+      state: /^[A-Za-z ]{2,}$/,
+      district: /^[A-Za-z ]{2,}$/,
+      address: /^.{5,}$/
 
     document.querySelectorAll('input').forEach(input => {
       input.addEventListener('input', (e) => {
