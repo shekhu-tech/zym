@@ -519,6 +519,68 @@
     input:invalid, select:invalid {
         border: 1px solid #ff4444 !important;
     }
+     /* Add these styles */
+    .experience-content .button-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .experience-card {
+        position: relative;
+        height: 200px;
+        max-width: 455px;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+
+    .experience-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 25px rgba(0, 247, 255, 0.4);
+    }
+
+    .card-image {
+        height: 200px;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .experience-card button {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        padding: 12px;
+        background: rgba(0, 247, 255, 0.9);
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        color: #000;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .experience-card button:hover {
+        background: #00f7ff;
+    }
+
+    @media (max-width: 768px) {
+        .experience-content .button-group {
+            grid-template-columns: 1fr;
+        }
+        
+        .experience-card {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
   </style>
 
   <!-- Card -->
@@ -554,17 +616,34 @@
     </div>
   </div>
 
-  <!-- Experience Popup -->
-  <div class="experience-popup" id="experiencePopup">
+  <!-- Modified Experience Popup -->
+<div class="experience-popup" id="experiencePopup">
     <div class="experience-content">
-      <h2>Select Your Experience Level</h2>
-      <div class="button-group">
-        <button onclick="window.location.href='index.html'">Till One Year</button>
-        <button onclick="window.location.href='index.html'">Till 2 Years</button>
-        <button onclick="window.location.href='index.html'">3 Years Onwards</button>
-      </div>
+        <h2>Select Your Experience Level</h2>
+        <div class="button-group">
+            <!-- Card 1 -->
+            <div class="experience-card">
+                <div class="card-image" style="background-image: url('beginner.jpg');">
+                    <button onclick="window.location.href='index.html'">Till One Year</button>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="experience-card">
+                <div class="card-image" style="background-image: url('intermediate.jpg');">
+                    <button onclick="window.location.href='index.html'">Till 2 Years</button>
+                </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="experience-card">
+                <div class="card-image" style="background-image: url('advanced.jpg');">
+                    <button onclick="window.location.href='index.html'">3 Years Onwards</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
   <!-- Form Popup -->
   <div class="popup" id="popup">
