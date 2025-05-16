@@ -1013,31 +1013,7 @@
       });
   });
 
-      const country = document.querySelector('[name="country"]');
-      if (country.value === "") {
-        document.getElementById('countryError').style.display = 'block';
-        return;
-      }
-
-      const email = document.querySelector('[name="email"]').value;
-      if (isDisposableEmail(email)) {
-        alert('Disposable email addresses are not allowed');
-        return;
-      }
-
-      if (!form.checkValidity()) {
-        alert('Please fill all fields correctly.');
-        return;
-      }
-
-      const formData = Object.fromEntries(new FormData(form));
-      console.log('Form Submitted:', formData);
-
-      localStorage.setItem('formSubmitted', 'true');
-      popup.style.display = 'none';
-      thanksPopup.style.display = 'flex';
-      form.reset();
-    });
+      
 
     // Disposable email checker
     function isDisposableEmail(email) {
