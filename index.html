@@ -970,7 +970,48 @@
 
     // Form Submission
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    e.preventDefault();
+
+    const country = document.querySelector('[name="country"]');
+    if (country.value === "") {
+      document.getElementById('countryError').style.display = 'block';
+      return;
+    }
+
+    const email = document.querySelector('[name="email"]').value;
+    if (isDisposableEmail(email)) {
+      alert('Disposable email addresses are not allowed');
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      alert('Please fill all fields correctly.');
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    // Optional hidden config
+    formData.append('_captcha', 'false');
+
+    fetch('https://formsubmit.co/crapdindia@gmail.com', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          localStorage.setItem('formSubmitted', 'true');
+          form.reset();
+          popup.style.display = 'none';
+          thanksPopup.style.display = 'flex';
+        } else {
+          alert('Something went wrong. Try again!');
+        }
+      })
+      .catch(error => {
+        alert('Error: ' + error.message);
+      });
+  });
 
       const country = document.querySelector('[name="country"]');
       if (country.value === "") {
