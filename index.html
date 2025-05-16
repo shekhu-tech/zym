@@ -623,21 +623,21 @@
         <div class="button-group">
             <!-- Card 1 -->
             <div class="experience-card">
-                <div class="card-image" style="background-image: url('beginner.jpg');">
+                <div class="card-image" style="background-image: url('lfit.png');">
                     <button onclick="window.location.href='index.html'">Till One Year</button>
                 </div>
             </div>
             
             <!-- Card 2 -->
             <div class="experience-card">
-                <div class="card-image" style="background-image: url('intermediate.jpg');">
+                <div class="card-image" style="background-image: url('lfit.png');">
                     <button onclick="window.location.href='index.html'">Till 2 Years</button>
                 </div>
             </div>
             
             <!-- Card 3 -->
             <div class="experience-card">
-                <div class="card-image" style="background-image: url('advanced.jpg');">
+                <div class="card-image" style="background-image: url('lfit.png');">
                     <button onclick="window.location.href='index.html'">3 Years Onwards</button>
                 </div>
             </div>
@@ -686,59 +686,8 @@
     </div>
   </div>
 
-  <script>
-    // Real-time validation
-    const formFields = {
-        name: /^[A-Za-z ]{3,}$/,
-        email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        number: /^\+91[6-9]\d{9}$/
-    };
-
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const field = e.target.name;
-            const errorElement = document.getElementById(`${field}Error`);
-            
-            if(formFields[field] && !formFields[field].test(e.target.value)) {
-                errorElement.style.display = 'block';
-                e.target.setCustomValidity('Invalid field');
-            } else {
-                errorElement.style.display = 'none';
-                e.target.setCustomValidity('');
-            }
-        });
-    });
-
-    // Enhanced form submission
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Additional validation
-        const country = document.querySelector('[name="country"]');
-        if(country.value === "") {
-            document.getElementById('countryError').style.display = 'block';
-            return;
-        }
-
-        // Validate email domain
-        const email = document.querySelector('[name="email"]').value;
-        if(isDisposableEmail(email)) {
-            alert('Disposable email addresses are not allowed');
-            return;
-        }
-
-        // Rest of your submission logic
-    });
-
-    // Disposable email checker
-    function isDisposableEmail(email) {
-        const disposableDomains = [
-            'tempmail.com', 'mailinator.com', '10minutemail.com',
-            'guerrillamail.com', 'throwawaymail.com', 'fakeinbox.com'
-        ];
-        const domain = email.split('@')[1];
-        return disposableDomains.includes(domain.toLowerCase());
-    }
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
     const card = document.querySelector('.card');
     const popup = document.getElementById('popup');
     const welcomePopup = document.getElementById('welcomePopup');
@@ -758,44 +707,90 @@
     });
 
     // Show Form
-    function showForm() {
+    window.showForm = function () {
       welcomePopup.style.display = 'none';
       popup.style.display = 'flex';
     }
 
     // Show Experience Popup
-    function showExperiencePopup() {
+    window.showExperiencePopup = function () {
       welcomePopup.style.display = 'none';
       experiencePopup.style.display = 'flex';
     }
 
+    // Close Thanks Popup
+    window.closeThanks = function () {
+      thanksPopup.style.display = 'none';
+      window.location.href = "zymbegnnermix.html";
+    }
+
+    // Real-time validation
+    const formFields = {
+      name: /^[A-Za-z ]{3,}$/,
+      email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      number: /^\+91[6-9]\d{9}$/
+    };
+
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', (e) => {
+        const field = e.target.name;
+        const errorElement = document.getElementById(`${field}Error`);
+
+        if (formFields[field] && !formFields[field].test(e.target.value)) {
+          errorElement.style.display = 'block';
+          e.target.setCustomValidity('Invalid field');
+        } else {
+          errorElement.style.display = 'none';
+          e.target.setCustomValidity('');
+        }
+      });
+    });
+
     // Form Submission
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      const country = document.querySelector('[name="country"]');
+      if (country.value === "") {
+        document.getElementById('countryError').style.display = 'block';
+        return;
+      }
+
+      const email = document.querySelector('[name="email"]').value;
+      if (isDisposableEmail(email)) {
+        alert('Disposable email addresses are not allowed');
+        return;
+      }
+
       if (!form.checkValidity()) return alert('Please fill all fields correctly.');
 
       const formData = Object.fromEntries(new FormData(form));
       console.log('Form Submitted:', formData);
       localStorage.setItem('formSubmitted', 'true');
-      
+
       popup.style.display = 'none';
       thanksPopup.style.display = 'flex';
       form.reset();
     });
 
-    // Close Thanks Popup
-    function closeThanks() {
-      thanksPopup.style.display = 'none';
-      window.location.href = "zymbegnnermix.html";
+    // Disposable email checker
+    function isDisposableEmail(email) {
+      const disposableDomains = [
+        'tempmail.com', 'mailinator.com', '10minutemail.com',
+        'guerrillamail.com', 'throwawaymail.com', 'fakeinbox.com'
+      ];
+      const domain = email.split('@')[1];
+      return disposableDomains.includes(domain.toLowerCase());
     }
 
     // Close Popups on Outside Click
     [welcomePopup, popup, thanksPopup, experiencePopup].forEach(popup => {
-      popup.addEventListener('click', function(e) {
+      popup.addEventListener('click', function (e) {
         if (e.target === this) this.style.display = 'none';
       });
     });
-  </script>
+  });
+</script>
 
 
 
